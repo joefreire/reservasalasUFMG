@@ -37,28 +37,29 @@
 							<option value="Verde">Verde</option>
 							<option value="Branco">Branco</option>
 							<option value="Verde/Branco">Verde/Branco</option>
-						</select>            </div>
-						<div class="form-group form-linha">
-							<label for="tipo_assento" class="optional">Tipo de Assento</label>
-							<select name="tipo_assento" id="tipo_assento" class="form-control">
-								<option value="Escolar">Escolar</option>
-								<option value="Universitária">Universitária</option>
-							</select>           
-						</div>
-						<h4>Disponibilidade para Reservas</h4>
-						<div class="checkbox form-linha">
-							<label for="disponivel" class="optional">Disponível para Reservas</label>
-							<input type="hidden" name="disponivel" value="0"><input type="checkbox" name="disponivel" id="disponivel" value="1">            
-						</div>
-						<div class="checkbox form-linha">
-							<label for="disponivel_professor" class="optional">Disponível para Pedidos de Professores</label>
-							<input type="hidden" name="disponivel_professor" value="0"><input type="checkbox" name="disponivel_professor" id="disponivel_professor" value="1">          
-						</div>
+						</select>          
+					</div>
+					<div class="form-group form-linha">
+						<label for="tipo_assento" class="optional">Tipo de Assento</label>
+						<select name="tipo_assento" id="tipo_assento" class="form-control">
+							<option value="Escolar">Escolar</option>
+							<option value="Universitária">Universitária</option>
+						</select>           
+					</div>
+					<h4>Disponibilidade para Reservas</h4>
+					<div class="checkbox form-linha">
+						<label for="disponivel" class="optional">Disponível para Reservas</label>
+						<input type="hidden" name="disponivel" value="0"><input type="checkbox" name="disponivel" id="disponivel" value="1">            
+					</div>
+					<div class="checkbox form-linha">
+						<label for="disponivel_professor" class="optional">Disponível para Pedidos de Professores</label>
+						<input type="hidden" name="disponivel_professor" value="0"><input type="checkbox" name="disponivel_professor" id="disponivel_professor" value="1">          
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	@endsection
-	@section('scripts')
-	@endsection
+</div>
+@endsection
+@section('scripts')
+@endsection

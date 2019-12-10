@@ -2,14 +2,15 @@
 @section('style')
 @endsection
 @section('content')
+<nav aria-label="breadcrumb">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+		<li class="breadcrumb-item"><a href="{{route('departamentos.index')}}">Departamentos</a></li>
+		<li class="breadcrumb-item active">Novo</li>
+	</ol>
+</nav>
 <div id="page-wrapper">
-	<nav aria-label="breadcrumb">
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-			<li class="breadcrumb-item"><a href="{{route('departamentos.index')}}">Departamentos</a></li>
-			<li class="breadcrumb-item active">Novo</li>
-		</ol>
-	</nav>
+
 	<div class="row">
 
 		<div class="col-md-12">

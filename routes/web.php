@@ -18,9 +18,12 @@ Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');
 
 
-Route::get('/home', 'HomeController@index')->name('home');
 
-  
-Route::resource('salas', 'SalaController')->middleware(['auth']);
-Route::resource('departamentos', 'DepartamentoController')->middleware(['auth']);
+
+Route::middleware('auth')->group(function () {   
+	Route::get('/home', 'HomeController@index')->name('home');
+	Route::resource('salas', 'SalaController');
+	Route::get('/salas/agenda/{id}', 'SalaController@agenda')->name('salas.agenda');
+	Route::resource('departamentos', 'DepartamentoController');
+});
 

@@ -80,4 +80,14 @@ class SalaController extends Controller
     public function destroy($id)
     {
     }
+    /**
+     * Mostra Agenda da sala passando id
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function agenda($id)
+    {
+        return view('sala.agenda');
+    }
 }
