@@ -25,5 +25,6 @@ Route::middleware('auth')->group(function () {
 	Route::resource('salas', 'SalaController');
 	Route::get('/salas/agenda/{id}', 'SalaController@agenda')->name('salas.agenda');
 	Route::resource('departamentos', 'DepartamentoController');
+	Route::post('/departamentos/getData', 'DepartamentoController@getData')->name('departamentos.data');
 });
 

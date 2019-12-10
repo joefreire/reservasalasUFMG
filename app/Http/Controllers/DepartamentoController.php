@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Departamento;
+use Yajra\Datatables\Datatables;
 
 class DepartamentoController extends Controller
 {
@@ -41,6 +43,16 @@ class DepartamentoController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
+
+        $departamento = Departamento::create([
+            'nome' => $request->nome_departamento,
+            'codigo' => $request->codigo_departamento,
+            'descricao' => $request->descricao_departamento,
+        ]);
+
+        return redirect()->route('departamentos.index')->with('success','Departamento criado com sucesso');
+
     }
     /**
      * Display the specified resource.
@@ -78,5 +90,16 @@ class DepartamentoController extends Controller
      */
     public function destroy($id)
     {
+    }    
+    /**
+     * Pega valores por ajax
+     *
+     * @param  Request \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public function getData(Request $request)
+    {
+        $query  = Departamento::query()->get();
+        return Datatables::of($query)->make(true);
     }
 }

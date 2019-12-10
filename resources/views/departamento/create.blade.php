@@ -19,7 +19,8 @@
 					<h4 class="card-title mb-0">Informações do Departamento</h4>
 				</div>
 				<div class="card-body">
-					<form enctype="application/x-www-form-urlencoded" action="" method="post">
+					{!! Form::open(['url' => route('departamentos.store'), 'class' => 'ui form','files' => false]) !!}
+					{!! Form::token()!!}
 						<div class="row form-linha">
 							<div class="col-md-12">
 								<div class="form-group">									
@@ -56,7 +57,7 @@
 								</div>
 							</div>
 						</div>
-					</form>
+					{!! Form::close() !!} 
 				</div>
 			</div>
 		</div>
