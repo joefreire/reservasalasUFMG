@@ -47,8 +47,9 @@
     <div class="wrapper">
         @include('_menu.left')
         <div class="main">
-            @include('_menu.top', ['clear'=>false])
+            @include('_menu.top')
             <main class="content">
+                @include('layouts.errors')
                 @yield('content')
             </main>
         </div>

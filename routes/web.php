@@ -12,10 +12,15 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	return view('welcome');
 });
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');
 
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+  
+Route::resource('salas', 'SalaController')->middleware(['auth']);
+Route::resource('departamentos', 'DepartamentoController')->middleware(['auth']);
+
