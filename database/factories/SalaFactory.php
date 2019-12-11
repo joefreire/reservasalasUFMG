@@ -1,8 +1,7 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\Models\Sala;
-use App\Models\Departamento;
+use App\Models\User;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
@@ -16,11 +15,15 @@ use Illuminate\Support\Str;
 | model instances for testing / seeding your application's database.
 |
 */
-$departamentos = 
-$factory->define(Sala::class, function (Faker $faker) {
+
+$factory->define(User::class, function (Faker $faker) {
     return [
         'nome' => $faker->name,
-        'capacidade' => $faker->randomElement($array = array (50,60,70,100)),
-
+        'email' => $faker->unique()->safeEmail,
+        'login' => $faker->unique()->userName,
+        'tipo' => 'usuario',
+        'email_verified_at' => now(),
+        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        'remember_token' => Str::random(10),
     ];
 });

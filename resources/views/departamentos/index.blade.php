@@ -4,6 +4,12 @@
 @endsection
 
 @section('content')
+<nav aria-label="breadcrumb">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+		<li class="breadcrumb-item active">Departamentos</li>
+	</ol>
+</nav>
 <div id="page-wrapper">   
 	<div class="col-12">
 		<div class="card">
@@ -52,7 +58,7 @@
 			{ data: 'nome', name: 'nome' },
 			{ data: 'codigo', name: 'codigo' },
 			{ data: 'id', render: function ( data, type, row, meta ){
-				return '<a href="users/'+row._id+'/edit"><i class="align-middle mr-2 fas fa-fw fa-edit" data-feather="edit-2"></i>Editar </a><a href="users/'+row._id+'/destroy"><i class="align-middle mr-2 fas fa-fw fa-trash" data-feather="trash"></i>Excluir</a>';
+				return '<a href="departamentos/'+row._id+'/editar"><i class="align-middle mr-2 fas fa-fw fa-edit" data-feather="edit-2"></i>Editar </a><a href="departamentos/'+row._id+'/destroy"><i class="align-middle mr-2 fas fa-fw fa-trash" data-feather="trash"></i>Excluir</a>';
 			}}
 			]
 		});

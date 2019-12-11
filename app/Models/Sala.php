@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
 class Sala extends Eloquent
 {
+	use SoftDeletes;
 	protected $connection = 'mongodb';
 	protected $collection = 'salas';
-
-	protected $fillable = [
-		'nome', 'local'
+	protected $guarded = [
+		'_id'
 	];
 }

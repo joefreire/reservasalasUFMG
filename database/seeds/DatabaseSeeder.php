@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\User;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
         $user = User::find(1);
         if(empty($user)){
             $user = User::create([
-                'name' => 'admin',
-                'user' => 'admin',
+                'nome' => 'admin',
+                'login' => 'admin',
                 'email' => 'admin@admin.com',
                 'tipo' => 'admin',
                 'password' => \Hash::make('123456'),

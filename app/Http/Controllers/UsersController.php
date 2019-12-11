@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Departamento;
 use Yajra\Datatables\Datatables;
 use Session;
-class DepartamentoController extends Controller
+class UsersController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -24,7 +25,7 @@ class DepartamentoController extends Controller
      */
     public function index()
     {
-        return view('departamentos.index');
+        return view('users.index');
     }
     /**
      * Show the form for creating a new resource.
@@ -33,7 +34,7 @@ class DepartamentoController extends Controller
      */
     public function create()
     {
-        return view('departamentos.create');
+        return view('users.create');
     }
     /**
      * Store a newly created resource in storage.
@@ -45,27 +46,33 @@ class DepartamentoController extends Controller
     {
         if(empty($request->_id)){
             $validatedData = $request->validate([
-                'nome' => 'required|unique:App\Models\Departamento,nome',
-                'codigo' => 'required|unique:App\Models\Departamento,codigo',
-            ]);
-            $departamento = Departamento::create([
-                'nome' => $request->nome,
-                'codigo' => $request->codigo,
-                'descricao' => $request->descricao,
-            ]);
-            return redirect()->route('departamentos.index')->with('success','Departamento criado com sucesso');
-        }else{
-            $departamento = Departamento::findOrFail($request->_id);
-            $validatedData = $request->validate([
                 'nome' => 'required',
-                'codigo' => 'required',
+                'login' => 'required|unique:App\Models\User,login',
+                'email' => 'required|unique:App\Models\User,email',
+                'tipo' => 'required',
             ]);
-            $departamento->nome = $request->nome;
-            $departamento->codigo = $request->codigo;
-            $departamento->descricao = $request->descricao;
-            $departamento->save(); 
+            $user = User::create([
+                'nome' => $request->nome,
+                'login' => $request->login,
+                'email' => $request->email,
+                'tipo' => $request->tipo,
+            ]);
+            return redirect()->route('users.index')->with('success','Criado com sucesso');
+        }else{
+            
+            $validatedData = $request->validate([
+                '_id' => 'required',
+                'tipo' => 'required',
+                'departamento' => 'required|exists:App\Models\Departamento,_id',
+            ]);
+            $user = User::findOrFail($request->_id);
+            $user->nome = $request->nome;
+            $user->login = $request->login;
+            $user->tipo = $request->tipo;
+            $user->departamento = Departamento::find($request->departamento)->toArray();
+            $user->save(); 
 
-            return redirect()->route('departamentos.index')->with('success','Departamento atualizado com sucesso');
+            return redirect()->route('users.index')->with('success','Atualizado com sucesso');
         }
 
 
@@ -89,14 +96,14 @@ class DepartamentoController extends Controller
      */
     public function edit($id)
     {
-        $departamento = Departamento::find($id);
-        if(!empty($departamento)){
-            foreach ($departamento->toArray() as $key => $value) {
+        $user = User::find($id);
+        if(!empty($user)){
+            foreach ($user->toArray() as $key => $value) {
                 Session::flash('_old_input.'.$key, $value);
             }  
-            return view('departamentos.create'); 
+            return view('users.create'); 
         }else{
-            return redirect()->route('departamentos.index')->with('error','Erro ao editar');
+            return redirect()->route('users.index')->with('error','Erro ao editar');
         }
         
     }
@@ -118,13 +125,13 @@ class DepartamentoController extends Controller
      */
     public function destroy($id)
     {
-        $departamento = Departamento::find($id);
-        if(!empty($departamento)){
-            $departamento->delete();
+        $user = User::find($id);
+        if(!empty($user)){
+            $user->delete();
         }else{
-            return redirect()->route('departamentos.index')->with('error','Erro ao deletar');
+            return redirect()->route('users.index')->with('error','Erro ao deletar');
         }
-        return redirect()->route('departamentos.index')->with('success','Departamento deletado com sucesso');
+        return redirect()->route('users.index')->with('success','Deletado com sucesso');
     }    
     /**
      * Pega valores por ajax
@@ -134,7 +141,7 @@ class DepartamentoController extends Controller
      */
     public function getData(Request $request)
     {
-        $query  = Departamento::query()->get();
+        $query  = User::query()->get();
         return Datatables::of($query)->make(true);
     }
 }
