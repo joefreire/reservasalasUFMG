@@ -57,9 +57,10 @@ class SalaController extends Controller
             ]);
             $sala = Sala::create([
                 'nome' => $request->nome,
-                'capacidade' => $request->capacidade,
+                'capacidade' => (int)$request->capacidade,
                 'tipo_quadro' => $request->tipo_quadro,
                 'tipo_assento' => $request->tipo_assento,
+                'localizacao' => ['type' => 'Point', 'coordinates' => [(float)$request->longitude, (float)$request->latitude], 'descricao_local' => $request->descricao_local],
                 'departamentos' => Departamento::whereIn('_id',$request->departamentos)->get()->toArray(),
             ]);
             return redirect()->route('salas.index')->with('success','Criado com sucesso');
@@ -73,9 +74,10 @@ class SalaController extends Controller
                 'tipo_assento' => 'required',
             ]);
             $sala->nome = $request->nome;
-            $sala->capacidade = $request->capacidade;
+            $sala->capacidade = (int)$request->capacidade;
             $sala->tipo_quadro = $request->tipo_quadro;
             $sala->tipo_assento = $request->tipo_assento;
+            $sala->localizacao = ['type' => 'Point', 'coordinates' => [(float)$request->longitude, (float)$request->latitude], 'descricao_local' => $request->descricao_local];
             $sala->departamentos = Departamento::whereIn('_id',$request->departamentos)->get()->toArray();
             $sala->save(); 
 

@@ -14,4 +14,5 @@ class Sala extends Eloquent
 	protected $guarded = [
 		'_id'
 	];
+
 }

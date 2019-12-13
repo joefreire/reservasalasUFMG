@@ -14,6 +14,13 @@
 Route::get('/', function () {
 	return view('welcome');
 });
+Route::get('/teste', function () {
+	$sala = \DB::connection('mysql')->table('sala')
+	->join('sala_departamentos', 'sala_departamentos.id_sala', '=', 'sala.id_sala')
+	->join('departamento', 'departamento.id_departamento', '=', 'sala_departamentos.id_departamento')
+	->first();
+	dd($sala);
+});
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');
 
