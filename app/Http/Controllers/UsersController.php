@@ -34,6 +34,7 @@ class UsersController extends Controller
      */
     public function create()
     {
+        Session::forget('_old_input');
         return view('users.create');
     }
     /**
@@ -56,19 +57,26 @@ class UsersController extends Controller
                 'login' => $request->login,
                 'email' => $request->email,
                 'tipo' => $request->tipo,
+                'departamento' => Departamento::find($request->departamento)->toArray(),
+                'preferencia_quadro' => $request->preferencia_quadro,
             ]);
+            if ($request->ajax()) {
+                return response()->json(['id' => $user->_id, 'login'=> $user->login]);
+            }
             return redirect()->route('users.index')->with('success','Criado com sucesso');
         }else{
-            
+
             $validatedData = $request->validate([
                 '_id' => 'required',
                 'tipo' => 'required',
+                'nome' => 'required',
                 'departamento' => 'required|exists:App\Models\Departamento,_id',
             ]);
             $user = User::findOrFail($request->_id);
             $user->nome = $request->nome;
             $user->login = $request->login;
             $user->tipo = $request->tipo;
+            $user->preferencia_quadro = $request->preferencia_quadro;
             $user->departamento = Departamento::find($request->departamento)->toArray();
             $user->save(); 
 

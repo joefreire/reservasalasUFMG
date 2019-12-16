@@ -62,8 +62,8 @@
 			{ data: 'login', name: 'login' },
 			{ data: 'tipo', name: 'tipo' },
 			{ data: 'email', name: 'email' },
-			{ data: 'departamentos.nome', name: 'departamentos.nome', defaultContent:'' },
-			{ data: 'id', render: function ( data, type, row, meta ){
+			{ data: 'departamento.nome', name: 'departamento.nome', defaultContent:'' },
+			{ data: '_id', render: function ( data, type, row, meta ){
 				return '<a href="usuarios/'+row._id+'/editar"><i class="align-middle mr-2 fas fa-fw fa-edit" data-feather="edit-2"></i>Editar </a><a href="usuarios/'+row._id+'/destroy"><i class="align-middle mr-2 fas fa-fw fa-trash" data-feather="trash"></i>Excluir</a>';
 			}}
 			]

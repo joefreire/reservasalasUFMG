@@ -64,17 +64,18 @@
 								{!! Form::select('tipo_assento', ['Escolar'=>'Escolar','Universitária'=>'Universitária'], old('tipo_assento'), array('placeholder' => 'Selecione o Tipo de Assento','class' => 'form-control')) !!}        
 							</div> 
 
-							<h4>Disponibilidade para Reservas</h4>
-							<div class="checkbox form-linha">
-								<label for="disponivel" class="optional">Disponível para Reservas</label>
-								<input type="hidden" name="disponivel" value="0"><input type="checkbox" name="disponivel" id="disponivel" value="1">            
-							</div>
-							<div class="checkbox form-linha">
-								<label for="disponivel_professor" class="optional">Disponível para Pedidos de Professores</label>
-								<input type="hidden" name="disponivel_professor" value="0"><input type="checkbox" name="disponivel_professor" id="disponivel_professor" value="1">          
-							</div>
+							<h4>Disponibilidade da sala</h4>
 
-
+							<div class="form-group mt-2 row">
+								<div class="form-group col-md-6">
+									{!! Form::label('disponivel_distribuição', 'Disponível na distribuição?') !!}                                
+									{!! Form::select('disponivel_distribuição', ['Sim'=>'Sim','Nao'=>'Não'], old('disponivel_distribuição'), array('placeholder' => '','class' => 'form-control')) !!}        
+								</div> 
+								<div class="form-group col-md-6">
+									{!! Form::label('disponivel_pedidos', 'Disponível para Pedidos?') !!}                                
+									{!! Form::select('disponivel_pedidos', ['Sim'=>'Sim','Nao'=>'Não'], old('disponivel_pedidos'), array('placeholder' => '','class' => 'form-control')) !!}        
+								</div> 
+							</div> 
 
 						</div>
 						<div class="col-md-6">

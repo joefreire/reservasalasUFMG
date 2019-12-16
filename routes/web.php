@@ -21,6 +21,10 @@ Route::get('/teste', function () {
 	->first();
 	dd($sala);
 });
+Route::get('/teste2', function () {
+	$sala = \App\Models\Departamento::all()->pluck('nome','unidade.nome','_id');
+	dd($sala);
+});
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');
 
@@ -43,9 +47,12 @@ Route::middleware('auth')->group(function () {
 	Route::prefix('departamentos')->group(function () {
 		Route::get('/', 'DepartamentoController@index')->name('departamentos.index');
 		Route::get('/novo', 'DepartamentoController@create')->name('departamentos.create');
+		Route::get('/unidade/novo', 'DepartamentoController@createUnidade')->name('departamentos.create.unidade');
 		Route::get('/{id}/destroy', 'DepartamentoController@destroy')->name('departamentos.destroy');
 		Route::get('/{id}/editar', 'DepartamentoController@edit')->name('departamentos.edit');
+		Route::get('/unidade/{id}/novo', 'DepartamentoController@editUnidade')->name('departamentos.edit.unidade');
 		Route::post('/store', 'DepartamentoController@store')->name('departamentos.store');
+		Route::post('/unidade/store', 'DepartamentoController@storeUnidade')->name('departamentos.store.unidade');
 		Route::post('/getData', 'DepartamentoController@getData')->name('departamentos.data');
 	});
 
@@ -68,12 +75,12 @@ Route::middleware('auth')->group(function () {
 	});
 
 	Route::prefix('reservas')->group(function () {
-		Route::get('/', 'ReservasController@index')->name('reservas.index');
-		Route::get('/novo', 'ReservasController@create')->name('reservas.create');
-		Route::get('/{id}/destroy', 'ReservasController@destroy')->name('reservas.destroy');
-		Route::get('/{id}/editar', 'ReservasController@edit')->name('reservas.edit');
-		Route::post('/store', 'ReservasController@store')->name('reservas.store');
-		Route::post('/getData', 'ReservasController@getData')->name('reservas.data');
+		Route::get('/', 'ReservaController@index')->name('reservas.index');
+		Route::get('/novo', 'ReservaController@create')->name('reservas.create');
+		Route::get('/{id}/destroy', 'ReservaController@destroy')->name('reservas.destroy');
+		Route::get('/{id}/editar', 'ReservaController@edit')->name('reservas.edit');
+		Route::post('/store', 'ReservaController@store')->name('reservas.store');
+		Route::post('/getData', 'ReservaController@getData')->name('reservas.data');
 	});
 });
 

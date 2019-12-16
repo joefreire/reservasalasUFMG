@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Departamento;
+use App\Models\Unidade;
 use Yajra\Datatables\Datatables;
 use Session;
 class DepartamentoController extends Controller
@@ -33,6 +34,7 @@ class DepartamentoController extends Controller
      */
     public function create()
     {
+        Session::forget('_old_input');
         return view('departamentos.create');
     }
     /**
@@ -47,29 +49,58 @@ class DepartamentoController extends Controller
             $validatedData = $request->validate([
                 'nome' => 'required|unique:App\Models\Departamento,nome',
                 'codigo' => 'required|unique:App\Models\Departamento,codigo',
+                'unidade' => 'required',
             ]);
             $departamento = Departamento::create([
                 'nome' => $request->nome,
                 'codigo' => $request->codigo,
                 'descricao' => $request->descricao,
+                'unidade' => Unidade::find($request->unidade)->toArray(),
             ]);
-            return redirect()->route('departamentos.index')->with('success','Departamento criado com sucesso');
+            return redirect()->route('departamentos.index')->with('success','Criado com sucesso');
         }else{
             $departamento = Departamento::findOrFail($request->_id);
             $validatedData = $request->validate([
                 'nome' => 'required',
                 'codigo' => 'required',
+                'unidade' => 'required',
             ]);
             $departamento->nome = $request->nome;
             $departamento->codigo = $request->codigo;
             $departamento->descricao = $request->descricao;
+            $departamento->unidade = Unidade::find($request->unidade)->toArray();
             $departamento->save(); 
 
-            return redirect()->route('departamentos.index')->with('success','Departamento atualizado com sucesso');
+            return redirect()->route('departamentos.index')->with('success','Atualizado com sucesso');
         }
 
+    }
+    /**
+     * Criar nova unidade
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeUnidade(Request $request)
+    {
+        if(empty($request->_id)){
+            $validatedData = $request->validate([
+                'nome' => 'required|unique:App\Models\Departamento,nome',
+            ]);
+            $unidade = Unidade::create([
+                'nome' => $request->nome,
+            ]);
+            return redirect()->route('departamentos.index')->with('success','Criado com sucesso');
+        }else{
+            $unidade = Unidade::findOrFail($request->_id);
+            $validatedData = $request->validate([
+                'nome' => 'required',
+            ]);
+            $unidade->nome = $request->nome;
+            $departamento->save(); 
 
-        
+            return redirect()->route('departamentos.index')->with('success','Atualizado com sucesso');
+        }
 
     }
     /**
@@ -95,6 +126,35 @@ class DepartamentoController extends Controller
                 Session::flash('_old_input.'.$key, $value);
             }  
             return view('departamentos.create'); 
+        }else{
+            return redirect()->route('departamentos.index')->with('error','Erro ao editar');
+        }
+        
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createUnidade()
+    {
+        Session::forget('_old_input');
+        return view('departamentos.createUnidade');
+    }
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function editUnidade($id)
+    {
+        $unidade = Unidade::find($id);
+        if(!empty($unidade)){
+            foreach ($unidade->toArray() as $key => $value) {
+                Session::flash('_old_input.'.$key, $value);
+            }  
+            return view('departamentos.unidade'); 
         }else{
             return redirect()->route('departamentos.index')->with('error','Erro ao editar');
         }

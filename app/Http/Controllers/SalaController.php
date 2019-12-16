@@ -36,6 +36,7 @@ class SalaController extends Controller
      */
     public function create()
     {
+        Session::forget('_old_input');
         return view('salas.create');
     }
     /**

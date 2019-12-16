@@ -35,7 +35,8 @@
           <span class="align-middle">Departamentos</span>
         </a>
         <ul id="departamentos_menu" class="sidebar-dropdown list-unstyled collapse ">
-          <li class="sidebar-item"><a class="sidebar-link" href="{{route('departamentos.create')}}">Cadastrar</a></li>
+          <li class="sidebar-item"><a class="sidebar-link" href="{{route('departamentos.create.unidade')}}">Cadastrar Unidade</a></li>
+          <li class="sidebar-item"><a class="sidebar-link" href="{{route('departamentos.create')}}">Cadastrar Departamento</a></li>
           <li class="sidebar-item"><a class="sidebar-link" href="{{route('departamentos.index')}}">Gerenciar</a></li>
         </ul>
       </li>

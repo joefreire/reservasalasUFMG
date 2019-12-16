@@ -23,6 +23,7 @@
 				<table class="table table-bordered table-hover display nowrap dataTable" id="table" width="100%">                            
 					<thead>
 						<tr>
+							<th>Unidade</th>
 							<th>Nome</th>
 							<th>Código</th>
 							<th>Ação</th>
@@ -55,6 +56,7 @@
 				url: "{{ asset('dist/datatables/Portuguese-Brasil.json') }}"
 			}, 
 			columns: [
+			{ data: 'unidade.nome', name: 'unidade.nome', defaultContent:'' },
 			{ data: 'nome', name: 'nome' },
 			{ data: 'codigo', name: 'codigo' },
 			{ data: 'id', render: function ( data, type, row, meta ){

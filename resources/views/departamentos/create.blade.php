@@ -21,6 +21,10 @@
 				<div class="card-body">
 					{!! Form::open(['url' => route('departamentos.store'), 'class' => 'ui form','files' => false]) !!}
 					{!! Form::token()!!}
+					<div class="row form-group col-md-3">
+						{!! Form::label('unidade', 'Unidade') !!}                                
+						{!! Form::select('unidade', \App\Models\Unidade::all()->pluck('nome','id'), old('unidade'), array('placeholder' => 'Selecione uma Unidade','class' => 'form-control')) !!}        
+					</div> 
 					<div class="row form-linha">
 						<div class="col-md-12">
 							<div class="form-group">									
@@ -30,6 +34,7 @@
 							</div>
 						</div>
 					</div>
+
 					<div class="row form-linha">
 						<div class="col-md-12">
 							<div class="form-group">
@@ -38,12 +43,13 @@
 							</div>
 						</div>
 					</div>
+
 					<div class="row form-linha">
 						<div class="col-md-12">
 							<div class="form-group">
 								<label for="descricao" class="optional">Descrição do Departamento</label>
 								{{ Form::textarea('content',old('descricao'),array('name' => 'descricao','class' => 'form-control', 'rows'=>'7')) }}
-       
+
 							</div>
 						</div>
 					</div>
