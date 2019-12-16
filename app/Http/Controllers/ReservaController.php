@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Departamento;
 use App\Models\Sala;
+use App\Models\Disciplina;
+use App\Models\Reserva;
 use Yajra\Datatables\Datatables;
 use Session;
 
-class SalaController extends Controller
+class ReservaController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -27,7 +29,7 @@ class SalaController extends Controller
      */
     public function index()
     {
-        return view('salas.index');
+        return view('reservas.index');
     }
     /**
      * Show the form for creating a new resource.
@@ -36,7 +38,7 @@ class SalaController extends Controller
      */
     public function create()
     {
-        return view('salas.create');
+        return view('reservas.create');
     }
     /**
      * Store a newly created resource in storage.
@@ -49,39 +51,29 @@ class SalaController extends Controller
 
         if(empty($request->_id)){
             $validatedData = $request->validate([
-                'nome' => 'required|unique:App\Models\Sala,nome, departamento',
-                'departamentos' => 'required|exists:App\Models\Departamento,_id',
-                'capacidade' => 'required|integer',
-                'tipo_quadro' => 'required',
-                'tipo_assento' => 'required',
+                'tipo' => 'required',
+                'usuario_responsavel' => 'required',
+                'data_reserva' => 'required',
             ]);
-            $sala = Sala::create([
-                'nome' => $request->nome,
-                'capacidade' => (int)$request->capacidade,
-                'tipo_quadro' => $request->tipo_quadro,
-                'tipo_assento' => $request->tipo_assento,
-                'localizacao' => ['type' => 'Point', 'coordinates' => [(float)$request->longitude, (float)$request->latitude], 'descricao_local' => $request->descricao_local],
-                'departamentos' => Departamento::whereIn('_id',$request->departamentos)->get()->toArray(),
+            $reserva = Reserva::create([
+                'tipo' => $request->tipo,
+                'data_reserva' => $request->data_reserva,
+                'data_final' => $request->data_reserva,
+                'usuario_responsavel' => $request->usuario_responsavel,
+                'usuario_criador' => Auth::id(),
             ]);
-            return redirect()->route('salas.index')->with('success','Criado com sucesso');
+            return redirect()->route('reservas.index')->with('success','Criado com sucesso');
         }else{
-            $sala = Sala::findOrFail($request->_id);
+            $reserva = Reserva::findOrFail($request->_id);
             $validatedData = $request->validate([
-                'nome' => 'required',
-                'departamentos' => 'required|exists:App\Models\Departamento,_id',
-                'capacidade' => 'required|integer',
-                'tipo_quadro' => 'required',
-                'tipo_assento' => 'required',
+                'tipo' => 'required',
+                'usuario_responsavel' => 'required',
             ]);
-            $sala->nome = $request->nome;
-            $sala->capacidade = (int)$request->capacidade;
-            $sala->tipo_quadro = $request->tipo_quadro;
-            $sala->tipo_assento = $request->tipo_assento;
-            $sala->localizacao = ['type' => 'Point', 'coordinates' => [(float)$request->longitude, (float)$request->latitude], 'descricao_local' => $request->descricao_local];
-            $sala->departamentos = Departamento::whereIn('_id',$request->departamentos)->get()->toArray();
-            $sala->save(); 
+            $reserva->responsavel = Auth::id();
+            $reserva->usuario_editor = Auth::id();
+            $reserva->save(); 
 
-            return redirect()->route('salas.index')->with('success','Atualizado com sucesso');
+            return redirect()->route('reservas.index')->with('success','Atualizado com sucesso');
         }
 
 
@@ -106,10 +98,10 @@ class SalaController extends Controller
     public function edit($id)
     {
         //
-        $sala = Sala::find($id);
-        if(!empty($sala)){
+        $reserva = Reserva::find($id);
+        if(!empty($reserva)){
 
-            foreach ($sala->toArray() as $key => $value) {
+            foreach ($reserva->toArray() as $key => $value) {
                 if($key == 'departamentos' && gettype($value) == 'array'){
                     $ids = array_column($value, '_id');
                     Session::flash('_old_input.'.$key, $ids);
@@ -117,9 +109,9 @@ class SalaController extends Controller
                     Session::flash('_old_input.'.$key, $value);
                 }                
             }  
-            return view('salas.create'); 
+            return view('reservas.create'); 
         }else{
-            return redirect()->route('salas.index')->with('error','Erro ao editar');
+            return redirect()->route('reservas.index')->with('error','Erro ao editar');
         }
         
     }
@@ -141,13 +133,13 @@ class SalaController extends Controller
      */
     public function destroy($id)
     {
-        $sala = Sala::find($id);
-        if(!empty($sala)){
-            $sala->delete();
+        $reserva = Reserva::find($id);
+        if(!empty($reserva)){
+            $reserva->delete();
         }else{
-            return redirect()->route('salas.index')->with('error','Erro ao deletar');
+            return redirect()->route('reservas.index')->with('error','Erro ao deletar');
         }
-        return redirect()->route('salas.index')->with('success','Deletado com sucesso');
+        return redirect()->route('reservas.index')->with('success','Deletado com sucesso');
     }    
     /**
      * Pega valores por ajax
@@ -157,7 +149,7 @@ class SalaController extends Controller
      */
     public function getData(Request $request)
     {
-        $query  = Sala::query()->get();
+        $query  = Reserva::query()->get();
         return Datatables::of($query)      
         ->addColumn('departamentos', function ($dados) {
             if(!empty($dados->departamentos)){
@@ -166,8 +158,5 @@ class SalaController extends Controller
 
         })->make(true);
     }
-    public function agenda($id)
-    {
-        return view('sala.agenda');
-    }
+
 }

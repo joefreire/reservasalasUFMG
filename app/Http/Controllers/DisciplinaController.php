@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Departamento;
 use App\Models\Sala;
+use App\Models\Disciplina;
 use Yajra\Datatables\Datatables;
 use Session;
 
-class SalaController extends Controller
+class DisciplinaController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -27,7 +28,7 @@ class SalaController extends Controller
      */
     public function index()
     {
-        return view('salas.index');
+        return view('disciplinas.index');
     }
     /**
      * Show the form for creating a new resource.
@@ -36,7 +37,7 @@ class SalaController extends Controller
      */
     public function create()
     {
-        return view('salas.create');
+        return view('disciplinas.create');
     }
     /**
      * Store a newly created resource in storage.
@@ -49,39 +50,29 @@ class SalaController extends Controller
 
         if(empty($request->_id)){
             $validatedData = $request->validate([
-                'nome' => 'required|unique:App\Models\Sala,nome, departamento',
+                'nome' => 'required|unique:App\Models\Disciplina,nome, departamento',
                 'departamentos' => 'required|exists:App\Models\Departamento,_id',
-                'capacidade' => 'required|integer',
-                'tipo_quadro' => 'required',
-                'tipo_assento' => 'required',
+                'codigo' => 'required',
             ]);
-            $sala = Sala::create([
+            $disciplina = Disciplina::create([
                 'nome' => $request->nome,
-                'capacidade' => (int)$request->capacidade,
-                'tipo_quadro' => $request->tipo_quadro,
-                'tipo_assento' => $request->tipo_assento,
-                'localizacao' => ['type' => 'Point', 'coordinates' => [(float)$request->longitude, (float)$request->latitude], 'descricao_local' => $request->descricao_local],
+                'codigo' => $request->codigo,
                 'departamentos' => Departamento::whereIn('_id',$request->departamentos)->get()->toArray(),
             ]);
-            return redirect()->route('salas.index')->with('success','Criado com sucesso');
+            return redirect()->route('disciplinas.index')->with('success','Criado com sucesso');
         }else{
-            $sala = Sala::findOrFail($request->_id);
+            $disciplina = Disciplina::findOrFail($request->_id);
             $validatedData = $request->validate([
                 'nome' => 'required',
                 'departamentos' => 'required|exists:App\Models\Departamento,_id',
-                'capacidade' => 'required|integer',
-                'tipo_quadro' => 'required',
-                'tipo_assento' => 'required',
+                'codigo' => 'required',
             ]);
-            $sala->nome = $request->nome;
-            $sala->capacidade = (int)$request->capacidade;
-            $sala->tipo_quadro = $request->tipo_quadro;
-            $sala->tipo_assento = $request->tipo_assento;
-            $sala->localizacao = ['type' => 'Point', 'coordinates' => [(float)$request->longitude, (float)$request->latitude], 'descricao_local' => $request->descricao_local];
-            $sala->departamentos = Departamento::whereIn('_id',$request->departamentos)->get()->toArray();
-            $sala->save(); 
+            $disciplina->nome = $request->nome;
+            $disciplina->codigo = $request->codigo;
+            $disciplina->departamentos = Departamento::whereIn('_id',$request->departamentos)->get()->toArray();
+            $disciplina->save(); 
 
-            return redirect()->route('salas.index')->with('success','Atualizado com sucesso');
+            return redirect()->route('disciplinas.index')->with('success','Atualizado com sucesso');
         }
 
 
@@ -106,10 +97,10 @@ class SalaController extends Controller
     public function edit($id)
     {
         //
-        $sala = Sala::find($id);
-        if(!empty($sala)){
+        $disciplina = Disciplina::find($id);
+        if(!empty($disciplina)){
 
-            foreach ($sala->toArray() as $key => $value) {
+            foreach ($disciplina->toArray() as $key => $value) {
                 if($key == 'departamentos' && gettype($value) == 'array'){
                     $ids = array_column($value, '_id');
                     Session::flash('_old_input.'.$key, $ids);
@@ -117,9 +108,9 @@ class SalaController extends Controller
                     Session::flash('_old_input.'.$key, $value);
                 }                
             }  
-            return view('salas.create'); 
+            return view('disciplinas.create'); 
         }else{
-            return redirect()->route('salas.index')->with('error','Erro ao editar');
+            return redirect()->route('disciplinas.index')->with('error','Erro ao editar');
         }
         
     }
@@ -141,13 +132,13 @@ class SalaController extends Controller
      */
     public function destroy($id)
     {
-        $sala = Sala::find($id);
-        if(!empty($sala)){
-            $sala->delete();
+        $disciplina = Disciplina::find($id);
+        if(!empty($disciplina)){
+            $disciplina->delete();
         }else{
-            return redirect()->route('salas.index')->with('error','Erro ao deletar');
+            return redirect()->route('disciplinas.index')->with('error','Erro ao deletar');
         }
-        return redirect()->route('salas.index')->with('success','Deletado com sucesso');
+        return redirect()->route('disciplinas.index')->with('success','Deletado com sucesso');
     }    
     /**
      * Pega valores por ajax
@@ -157,7 +148,7 @@ class SalaController extends Controller
      */
     public function getData(Request $request)
     {
-        $query  = Sala::query()->get();
+        $query  = Disciplina::query()->get();
         return Datatables::of($query)      
         ->addColumn('departamentos', function ($dados) {
             if(!empty($dados->departamentos)){
@@ -166,8 +157,5 @@ class SalaController extends Controller
 
         })->make(true);
     }
-    public function agenda($id)
-    {
-        return view('sala.agenda');
-    }
+
 }

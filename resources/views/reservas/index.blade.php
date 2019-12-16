@@ -7,15 +7,15 @@
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
 		<li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-		<li class="breadcrumb-item active">Usuarios</li>
+		<li class="breadcrumb-item active">Disciplinas</li>
 	</ol>
 </nav>
 <div id="page-wrapper">   
 	<div class="col-12">
 		<div class="card">
 			<div class="card-header">
-				<a href="{{route('users.create')}}" class="btn btn-outline-primary btn-square float-right">Novo</a>
-				<h5 class="card-title">Usuarios</h5>
+				<a href="{{route('departamentos.create')}}" class="btn btn-outline-primary btn-square float-right">Novo</a>
+				<h5 class="card-title">Disciplinas</h5>
 
 			</div>
 
@@ -24,10 +24,8 @@
 					<thead>
 						<tr>
 							<th>Nome</th>
-							<th>Login</th>
-							<th>Tipo</th>
-							<th>Email</th>
-							<th>Departamento</th>
+							<th>Código</th>
+							<th>Departamentos</th>
 							<th>Ação</th>
 						</tr>
 					</thead>
@@ -47,7 +45,7 @@
 			processing: true,
 			serverSide: true,
 			ajax: {
-				url: "{{route('users.data')}}",
+				url: "{{route('disciplinas.data')}}",
 				type: 'POST',
 				dataType: "json",
 				headers: {
@@ -59,12 +57,10 @@
 			}, 
 			columns: [
 			{ data: 'nome', name: 'nome' },
-			{ data: 'login', name: 'login' },
-			{ data: 'tipo', name: 'tipo' },
-			{ data: 'email', name: 'email' },
-			{ data: 'departamentos.nome', name: 'departamentos.nome', defaultContent:'' },
+			{ data: 'codigo', name: 'login' },
+			{ data: 'departamentos', name: 'departamentos', defaultContent:'' },
 			{ data: 'id', render: function ( data, type, row, meta ){
-				return '<a href="usuarios/'+row._id+'/editar"><i class="align-middle mr-2 fas fa-fw fa-edit" data-feather="edit-2"></i>Editar </a><a href="usuarios/'+row._id+'/destroy"><i class="align-middle mr-2 fas fa-fw fa-trash" data-feather="trash"></i>Excluir</a>';
+				return '<a href="disciplinas/'+row._id+'/editar"><i class="align-middle mr-2 fas fa-fw fa-edit" data-feather="edit-2"></i>Editar </a><a href="disciplinas/'+row._id+'/destroy"><i class="align-middle mr-2 fas fa-fw fa-trash" data-feather="trash"></i>Excluir</a>';
 			}}
 			]
 		});

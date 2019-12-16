@@ -91,11 +91,11 @@
 										<div class="row">
 											<div class="form-group col-md-6">
 												{{ Form::label('latitude', 'Latitude', ['class' => 'control-label']) }}
-												{{ Form::text('latitude', (old('latitude') ?? '-43.964459'), array('class' => 'form-control'))}}      
+												{{ Form::text('latitude', (old('localizacao')["coordinates"][1] ?? '-43.964459'), array('class' => 'form-control'))}}      
 											</div> 
 											<div class="form-group col-md-6">
 												{{ Form::label('longitude', 'Longitude', ['class' => 'control-label']) }}
-												{{ Form::text('longitude', (old('longitude') ?? '-19.869288'), array('class' => 'form-control'))}}      
+												{{ Form::text('longitude', (old('localizacao')["coordinates"][0] ?? '-19.869288'), array('class' => 'form-control'))}}      
 											</div> 
 										</div> 
 									</div>
@@ -126,14 +126,14 @@
 			container: 'map-canvas', 
 			style: 'mapbox://styles/mapbox/streets-v11', 
 			center: [-43.964459, -19.869288], 
-			zoom: 18
+			zoom: 15
 		});
 		var marker = new mapboxgl.Marker({
 			draggable: true
 		})
-		.setLngLat([-43.964459, -19.869288])
+		.setLngLat([{{ isset(old('localizacao')["coordinates"][0]) ? old('localizacao')["coordinates"][0]: -43.964459}}, {{ isset(old('localizacao')["coordinates"][1]) ? old('localizacao')["coordinates"][1]: -43.964459}}])
 		.addTo(map);
-
+		console
 		function onDragEnd() {
 			var lngLat = marker.getLngLat();
 			$('#latitude').val(lngLat.lat)

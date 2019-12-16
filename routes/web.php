@@ -57,5 +57,23 @@ Route::middleware('auth')->group(function () {
 		Route::post('/store', 'UsersController@store')->name('users.store');
 		Route::post('/getData', 'UsersController@getData')->name('users.data');
 	});
+
+	Route::prefix('disciplinas')->group(function () {
+		Route::get('/', 'DisciplinaController@index')->name('disciplinas.index');
+		Route::get('/novo', 'DisciplinaController@create')->name('disciplinas.create');
+		Route::get('/{id}/destroy', 'DisciplinaController@destroy')->name('disciplinas.destroy');
+		Route::get('/{id}/editar', 'DisciplinaController@edit')->name('disciplinas.edit');
+		Route::post('/store', 'DisciplinaController@store')->name('disciplinas.store');
+		Route::post('/getData', 'DisciplinaController@getData')->name('disciplinas.data');
+	});
+
+	Route::prefix('reservas')->group(function () {
+		Route::get('/', 'ReservasController@index')->name('reservas.index');
+		Route::get('/novo', 'ReservasController@create')->name('reservas.create');
+		Route::get('/{id}/destroy', 'ReservasController@destroy')->name('reservas.destroy');
+		Route::get('/{id}/editar', 'ReservasController@edit')->name('reservas.edit');
+		Route::post('/store', 'ReservasController@store')->name('reservas.store');
+		Route::post('/getData', 'ReservasController@getData')->name('reservas.data');
+	});
 });
 
