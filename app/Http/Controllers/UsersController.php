@@ -148,7 +148,8 @@ class UsersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getData(Request $request)
-    {
+    {   
+        //test return response()->json(User::get());
         $query  = User::query()->get();
         return Datatables::of($query)->make(true);
     }

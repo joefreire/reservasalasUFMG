@@ -28,7 +28,7 @@
     </style>
 
     {{--     <script src="{{ asset('/js/settings.js')}}"></script> --}}
-    <script src="{{ asset('/js/app.js')}}"></script>
+    <script src="{{ asset('/js/theme.js')}}"></script>
     @stack('scripts')
     <script>
         window.Laravel = <?php

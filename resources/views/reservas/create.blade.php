@@ -53,16 +53,13 @@
 						<div class="form-group col-md-3">
 							<label for="data_final" id="label_data" class="required">Data Final</label>
 							<input type="text" name="data_final" id="data_final" value="{{(old('data_final'))}}" class="form-control">     
+						</div>					
+						<div class="form-group col-md-3">
+							<label for="dias_recorrencia[]" id="label_dias">Dias de Recorrência</label>
+							{!! Form::select('dias_recorrencia[]', ['Segunda'=>'Segunda','Terca'=>'Terca','Quarta'=>'Quarta','Quinta'=>'Quinta','Sexta'=>'Sexta','Sabado'=>'Sábado','Domingo'=>'Domingo'], old('dias_recorrencia[]'), array('multiple' => '','id' => 'dias_recorrencia','class' => 'simpleSelect2 form-control')) !!}       
 						</div>
 					</div>
-					<div class="form-group form-linha">
-						<label for="codigo" class="required">Código da Disciplina</label>
-						<input type="text" name="codigo" id="codigo" value="{{(old('codigo'))}}" class="form-control">          
-					</div>
-					<div class="form-group">
-						{!! Form::label('departamentos', 'Departamento') !!}                                
-						{!! Form::select('departamentos[]', \App\Models\Departamento::all()->pluck('nome','id'), old('departamentos'), array('class' => 'simpleSelect2 form-control', 'multiple'=>'multiple')) !!}        
-					</div> 
+
 					<div class="submit col-md-12">
 						<div class="mt-3">
 
@@ -128,8 +125,10 @@
 		if($(this).val()== 'Unica'){
 			$("#data_final").datepicker("update", $('#data_inicial').val());
 			$("#data_final").parent().hide()
+			$("#dias_recorrencia").parent().hide()
 		}else{
 			$("#data_final").parent().show()
+			$("#dias_recorrencia").parent().show()
 		}
 		
 
