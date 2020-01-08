@@ -8,6 +8,7 @@ use App\Models\Departamento;
 use App\Models\Sala;
 use Yajra\Datatables\Datatables;
 use Session;
+use App\Http\Requests\SalaFormRequest;
 
 class SalaController extends Controller
 {
@@ -45,17 +46,11 @@ class SalaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SalaFormRequest $request)
     {
 
         if(empty($request->_id)){
-            $validatedData = $request->validate([
-                'nome' => 'required|unique:App\Models\Sala,nome, departamento',
-                'departamentos' => 'required|exists:App\Models\Departamento,_id',
-                'capacidade' => 'required|integer',
-                'tipo_quadro' => 'required',
-                'tipo_assento' => 'required',
-            ]);
+
             $sala = Sala::create([
                 'nome' => $request->nome,
                 'capacidade' => (int)$request->capacidade,
@@ -66,14 +61,7 @@ class SalaController extends Controller
             ]);
             return redirect()->route('salas.index')->with('success','Criado com sucesso');
         }else{
-            $sala = Sala::findOrFail($request->_id);
-            $validatedData = $request->validate([
-                'nome' => 'required',
-                'departamentos' => 'required|exists:App\Models\Departamento,_id',
-                'capacidade' => 'required|integer',
-                'tipo_quadro' => 'required',
-                'tipo_assento' => 'required',
-            ]);
+
             $sala->nome = $request->nome;
             $sala->capacidade = (int)$request->capacidade;
             $sala->tipo_quadro = $request->tipo_quadro;

@@ -9,6 +9,7 @@ use App\Models\Sala;
 use App\Models\Disciplina;
 use Yajra\Datatables\Datatables;
 use Session;
+use App\Http\Requests\DisciplinaFormRequest;
 
 class DisciplinaController extends Controller
 {
@@ -46,15 +47,10 @@ class DisciplinaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DisciplinaFormRequest $request)
     {
 
         if(empty($request->_id)){
-            $validatedData = $request->validate([
-                'nome' => 'required|unique:App\Models\Disciplina,nome, departamento',
-                'departamentos' => 'required|exists:App\Models\Departamento,_id',
-                'codigo' => 'required',
-            ]);
             $disciplina = Disciplina::create([
                 'nome' => $request->nome,
                 'codigo' => $request->codigo,
@@ -63,11 +59,6 @@ class DisciplinaController extends Controller
             return redirect()->route('disciplinas.index')->with('success','Criado com sucesso');
         }else{
             $disciplina = Disciplina::findOrFail($request->_id);
-            $validatedData = $request->validate([
-                'nome' => 'required',
-                'departamentos' => 'required|exists:App\Models\Departamento,_id',
-                'codigo' => 'required',
-            ]);
             $disciplina->nome = $request->nome;
             $disciplina->codigo = $request->codigo;
             $disciplina->departamentos = Departamento::whereIn('_id',$request->departamentos)->get()->toArray();

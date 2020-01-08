@@ -7,6 +7,9 @@ use App\Models\Departamento;
 use App\Models\Unidade;
 use Yajra\Datatables\Datatables;
 use Session;
+use App\Http\Requests\DepartamentoFormRequest;
+use App\Http\Requests\UnidadeFormRequest;
+
 class DepartamentoController extends Controller
 {
     /**
@@ -43,14 +46,10 @@ class DepartamentoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DepartamentoFormRequest $request)
     {
+
         if(empty($request->_id)){
-            $validatedData = $request->validate([
-                'nome' => 'required|unique:App\Models\Departamento,nome',
-                'codigo' => 'required|unique:App\Models\Departamento,codigo',
-                'unidade' => 'required',
-            ]);
             $departamento = Departamento::create([
                 'nome' => $request->nome,
                 'codigo' => $request->codigo,
@@ -60,11 +59,6 @@ class DepartamentoController extends Controller
             return redirect()->route('departamentos.index')->with('success','Criado com sucesso');
         }else{
             $departamento = Departamento::findOrFail($request->_id);
-            $validatedData = $request->validate([
-                'nome' => 'required',
-                'codigo' => 'required',
-                'unidade' => 'required',
-            ]);
             $departamento->nome = $request->nome;
             $departamento->codigo = $request->codigo;
             $departamento->descricao = $request->descricao;
@@ -81,21 +75,15 @@ class DepartamentoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storeUnidade(Request $request)
+    public function storeUnidade(UnidadeFormRequest $request)
     {
         if(empty($request->_id)){
-            $validatedData = $request->validate([
-                'nome' => 'required|unique:App\Models\Departamento,nome',
-            ]);
             $unidade = Unidade::create([
                 'nome' => $request->nome,
             ]);
             return redirect()->route('departamentos.index')->with('success','Criado com sucesso');
         }else{
             $unidade = Unidade::findOrFail($request->_id);
-            $validatedData = $request->validate([
-                'nome' => 'required',
-            ]);
             $unidade->nome = $request->nome;
             $departamento->save(); 
 

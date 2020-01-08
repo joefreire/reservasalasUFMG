@@ -10,6 +10,7 @@ use App\Models\Disciplina;
 use App\Models\Reserva;
 use Yajra\Datatables\Datatables;
 use Session;
+use App\Http\Requests\ReservaFormRequest;
 
 class ReservaController extends Controller
 {
@@ -47,15 +48,11 @@ class ReservaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ReservaFormRequest $request)
     {
 
         if(empty($request->_id)){
-            $validatedData = $request->validate([
-                'tipo' => 'required',
-                'usuario_responsavel' => 'required',
-                'data_reserva' => 'required',
-            ]);
+
             $reserva = Reserva::create([
                 'tipo' => $request->tipo,
                 'data_reserva' => $request->data_reserva,
@@ -66,10 +63,6 @@ class ReservaController extends Controller
             return redirect()->route('reservas.index')->with('success','Criado com sucesso');
         }else{
             $reserva = Reserva::findOrFail($request->_id);
-            $validatedData = $request->validate([
-                'tipo' => 'required',
-                'usuario_responsavel' => 'required',
-            ]);
             $reserva->responsavel = Auth::id();
             $reserva->usuario_editor = Auth::id();
             $reserva->save(); 

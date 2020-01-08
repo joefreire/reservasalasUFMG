@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Departamento;
 use Yajra\Datatables\Datatables;
 use Session;
+use App\Http\Requests\UserFormRequest;
 class UsersController extends Controller
 {
     /**
@@ -43,15 +44,9 @@ class UsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserFormRequest $request)
     {
         if(empty($request->_id)){
-            $validatedData = $request->validate([
-                'nome' => 'required',
-                'login' => 'required|unique:App\Models\User,login',
-                'email' => 'required|unique:App\Models\User,email',
-                'tipo' => 'required',
-            ]);
             $user = User::create([
                 'nome' => $request->nome,
                 'login' => $request->login,
@@ -66,12 +61,6 @@ class UsersController extends Controller
             return redirect()->route('users.index')->with('success','Criado com sucesso');
         }else{
 
-            $validatedData = $request->validate([
-                '_id' => 'required',
-                'tipo' => 'required',
-                'nome' => 'required',
-                'departamento' => 'required|exists:App\Models\Departamento,_id',
-            ]);
             $user = User::findOrFail($request->_id);
             $user->nome = $request->nome;
             $user->login = $request->login;
